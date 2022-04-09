@@ -29,11 +29,10 @@ def insert_text(names: str) -> bool:
     :return: boolean
     """
     try:
-        file = names.split('\n')
         if path.exists(path=r'./Assets/names.txt'):
             remove(r'./Assets/names.txt')
         data = open(file='./Assets/names.txt', mode='a', encoding='utf8')
-        for i in file:
+        for i in names:
             data.write(i)
         data.close()
         return True

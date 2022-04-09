@@ -4,7 +4,7 @@ from os import path
 from unidecode import unidecode
 
 
-def search(name: str, mode: str) -> list[str]:
+def search_name(name: str, mode: str) -> list[str]:
     """
     :param name: string
     :param mode: string

@@ -4,9 +4,10 @@ from os import path
 from unidecode import unidecode
 
 
-def search(name, mode):
+def search(name: str, mode: str) -> list[str]:
     """
     :param name: string
+    :param mode: string
     :return: list of string
     """
     try:

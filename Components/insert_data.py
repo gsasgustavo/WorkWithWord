@@ -26,7 +26,7 @@ def insert_file(names: str) -> bool:
 def insert_text(names: str) -> bool:
     """
     :param names: list of string
-    :return:
+    :return: boolean
     """
     try:
         file = names.split('\n')

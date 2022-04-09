@@ -9,10 +9,10 @@ def insert_file(names: str) -> bool:
     :return: boolean
     """
     try:
-        with open(names, 'r') as file:
-            if path.exists(r'./Assets/names.txt'):
+        with open(file=names, mode='r', encoding='utf8') as file:
+            if path.exists(path=r'./Assets/names.txt'):
                 remove(r'./Assets/names.txt')
-            data = open('./Assets/names.txt', 'a')
+            data = open(file='./Assets/names.txt', mode='a', encoding='utf8')
             for i in file.read():
                 data.write(i)
             data.close()
@@ -29,11 +29,10 @@ def insert_text(names: str) -> bool:
     :return:
     """
     try:
-        print(names.split('\n'))
         file = names.split('\n')
-        if path.exists(r'./Assets/names.txt'):
+        if path.exists(path=r'./Assets/names.txt'):
             remove(r'./Assets/names.txt')
-        data = open('./Assets/names.txt', 'a')
+        data = open(file='./Assets/names.txt', mode='a', encoding='utf8')
         for i in file:
             data.write(i)
         data.close()

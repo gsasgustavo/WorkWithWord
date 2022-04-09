@@ -33,7 +33,7 @@ def window_insert():
             Interface.Input(size=(52, 0), key='filepath'),
             Interface.FileBrowse(button_text='...')
         ],
-        [Interface.Radio(text='Digitar Dados', group_id='dados', key='clipboard', default=True)],
+        [Interface.Radio(text='Digitar/Colar Texto', group_id='dados', key='clipboard', default=True)],
         [Interface.Multiline(size=(60, 0), expand_y=True, key='listtext', no_scrollbar=True)],
         [
             Interface.Button(button_text='Inserir', size=(26, 3)),

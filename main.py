@@ -3,6 +3,7 @@
 # from layout import layout
 from Components.insert_data import insert_file, insert_text
 from Components.search_data import search
+from unidecode import unidecode
 
 # layout()
 
@@ -37,7 +38,7 @@ if entry == '1':
         insert = insert_text(names=input(str('Insira a lista de nomes:\n\t')))
 elif entry == '2':
     text = str(input('Digite o nome a pesquisar:\n\t'))
-    result = search(name=text)
+    result = search(name=unidecode(text.lower()))
     print('A pesquisa por "{}" retornou {} nomes:'.format(text, len(result)))
     for i in result:
         print(i)

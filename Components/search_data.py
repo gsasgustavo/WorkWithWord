@@ -1,8 +1,7 @@
 # coding=utf8
 
 from os import path
-
-from mmap import mmap, ACCESS_READ
+from unidecode import unidecode
 
 
 def search(name):
@@ -15,10 +14,9 @@ def search(name):
             raise FileNotFoundError('Arquivo para pesquisa está ausente')
         result = list()
         with open(file=r'./Assets/names.txt', mode='r', encoding='utf8') as file:
-            lines = [x.strip() for x in file.readlines()]
-            for line in lines:
-                if name.lower() in line.lower():
-                    result.append(line)
+            for line in file:
+                if name in unidecode(line.lower()):
+                    result.append(line.replace('\n', ''))
             return result
     except Exception as e:
         print(e.args)

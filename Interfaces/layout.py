@@ -7,7 +7,7 @@ from Components.search_data import search_name
 from PySimpleGUI import PySimpleGUI as Interface
 from unidecode import unidecode
 from psutil import Process
-from os import getpid
+from os import getpid, path
 
 
 def window_components():
@@ -16,7 +16,11 @@ def window_components():
         [Interface.Text(text='Escolher ação:')],
         [
             Interface.Button(button_text='Inserir Dados', size=(26, 3)),
-            Interface.Button(button_text='Iniciar Busca', size=(26, 3))
+            Interface.Button(
+                button_text='Iniciar Busca',
+                size=(26, 3),
+                disabled=path.exists(path=r'../Assets/names.txt')
+            )
         ]
     ]
     return Interface.Window(

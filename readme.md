@@ -7,13 +7,27 @@
 
 ## Tópicos:
 
-* [Descrição do Projeto](#descrição-do-projeto)
+* [Descrição do Projeto](#descrio-do-projeto)
 * [Funcionalidades](#funcionalidades)
 * [Tecnologias Utilizadas](#tecnologias-utilizadas)
+* [Dependências](#dependncias)
+* [Modos de Execução](#modos-de-execuo)
+* [Fluxograma](#fluxograma)
 
 ## Descrição do Projeto:
 
-Sistema criado com o intuito de **inserir** e **buscar** nomes de pessoas em grande escala.
+Sistema criado com o intuito de **inserir** e **buscar** nomes de pessoas em grande escala. No decurso da execução do
+sistema, é permitido ao usuário realizar ações que permeiam entre inserção e busca de nomes de pessoas.
+
+No que tange a inserção dos nomes, a mesma pode ser realizada com o carregamento (upload) de arquivos de texto simples, 
+tais como *\*.txt*, *\*.csv*, ou por inserção de texto, seja digitação ou colagem. Em ambos os casos, os nomes são 
+delimitados por linhas e, ao confirmar esse envio de dados, um novo arquivo `/Assets/names.txt` é gerado.
+
+Para a realização de busca/pesquisa de nomes, o usuário pode digitar nomes completos ou apenas algumas letras e optar 
+pelas buscas relativa ou exata. A busca relativa fará com que o sistema aplique uma coersão para que o texto digitado e 
+os dados salvos sejam lidos como *unicode* e *case-insensitive*. Na busca exata, o sistema procurará o texto confome 
+informado pelo usuário. Em qualquer modo de busca, o sistema lerá o arquivo de texto `/Assets/names.txt` e retornará 
+todas as ocorrências da pesquisa, caso haja.
 
 ## Funcionalidades:
 
@@ -28,11 +42,28 @@ Sistema criado com o intuito de **inserir** e **buscar** nomes de pessoas em gra
 
 - [IDE JetBrains PyCharm CE](https://www.jetbrains.com/pycharm/)
 - [Python Language](https://www.python.org/)
-- [PySimple GUI](https://pysimplegui.readthedocs.io/)
+- [Package Installer for Python](https://pip.pypa.io/en/stable/getting-started/)
+
+## Dependências:
+
+> A Instalação da Linguagem Python e o Pacote de Instalação (PIP) pode ser apreciada nos links dispostos em [Tecnologias Utilizadas](#tecnologias-utilizadas).
+
+Para a criação da Interface Gráfica foi utilizada a Biblioteca [PySimple GUI](https://pysimplegui.readthedocs.io/):
+
+`pip install PySimpleGUI`
+
+A Biblioteca Unidecode foi utilizada para a remoção de caracteres especiais:
+
+`pip install Unidecode`
+
+Para analisar o consumo de Hardware utilizou-se a biblioteca PSUtil:
+
+`pip install psutil`
 
 ## Modos de Execução:
 
 > Além da Interface Gráfica, há como utilizar a aplicação através do terminal, conforme trecho subsequente do arquivo *main.py*:
+
 ~~~python
 gui = True
 if gui:
@@ -45,22 +76,19 @@ else:
 
 ~~~mermaid
 graph LR
-start(( )) --> A{{escolher acao}}
-A --Inserir Dados--> B{{modo de insercao}}
-A --Iniciar Busca--> G(Digitar Texto)
-B --Voltar--> A
-B --Inserir--> D(Carregar Arquivo)
-B --Inserir--> E(Digitar/Colar Texto)
-D --Voltar--> B
-D --> F[Dados inseridos]
-E --Voltar--> B
-E --> F
-F --Voltar--> A
+start(( )) --> A{ }
+A --Inserir Dados--> B{ }
+A --Iniciar Busca--> C(Digitar Texto)
+B --> A
+B --Carregar Arquivo--> D[Dados inseridos]
+B --Inserir Texto--> D
+D --> finish
+C --> A
+C --com resultados--> E[Ver Resultados]
+C --sem resultados--> C
+E --> C
+E --> F[Analisar]
+E --> finish(( ))
+F --> E
 F --> finish(( ))
-G --Voltar--> A
-G --Buscar--> H{ }
-H --com resultados--> I[Ver Resultados]
-H --sem resultados--> G
-I --voltar--> G
-I --> finish(( ))
 ~~~

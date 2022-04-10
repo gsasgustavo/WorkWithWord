@@ -1,9 +1,13 @@
 # coding=utf8
 
-from PySimpleGUI import PySimpleGUI as Interface
+from datetime import datetime
+
 from Components.insert_data import insert_file, insert_text
 from Components.search_data import search_name
+from PySimpleGUI import PySimpleGUI as Interface
 from unidecode import unidecode
+from psutil import Process
+from os import getpid
 
 
 def window_components():
@@ -78,7 +82,8 @@ def window_result(results):
         [Interface.Text(text='A busca retornou {} ocorrências:'.format(len(results)))],
         [Interface.Listbox(values=results, size=(60, 12))],
         [
-            Interface.Button(button_text='Voltar', size=(26, 3))
+            Interface.Button(button_text='Voltar', size=(26, 3)),
+            Interface.Button(button_text='Analisar', size=(26, 3))
         ]
     ]
     return Interface.Window(
@@ -90,8 +95,27 @@ def window_result(results):
     )
 
 
+def window_analysis(time, process):
+    Interface.theme(new_theme='DarkGrey10')
+    elements = [
+        [Interface.Text(text='Análise da Busca:\n')],
+        [Interface.Text(text='Tempo de execução: ' + str(time) + 'ms')],
+        [Interface.Text(text='Consumo de CPU: ' + str(process.cpu_times()[0]) + 's')],
+        [Interface.Text(text='Consumo de RAM: ' + str(process.memory_info()[0] / 8000000000) + 'B')],
+        [Interface.Button(button_text='Voltar', size=(26, 3))]
+    ]
+    return Interface.Window(
+        title='Resultados',
+        layout=elements,
+        finalize=True,
+        location=(500, 500),
+        size=(450, 180)
+    )
+
+
 def layout():
-    component, insert, search, result = window_components(), None, None, None
+    component, insert, search, result, analysis = window_components(), None, None, None, None
+    execution_time = process = None
     while True:
         window, event, values = Interface.read_all_windows()
         if window == component:
@@ -125,6 +149,8 @@ def layout():
             if event == Interface.WIN_CLOSED:
                 break
             elif event == 'Buscar':
+                start_time = datetime.now()
+                process = Process(getpid())
                 results = list()
                 if values['text']:
                     if values['relative'] and not values['exact']:
@@ -140,13 +166,24 @@ def layout():
                     else:
                         search.hide()
                         result = window_result(results)
+                end_time = datetime.now()
+                execution_time = (end_time - start_time).total_seconds() * 1000
             elif event == 'Voltar':
                 search.hide()
                 component.un_hide()
         if window == result:
             if event == Interface.WIN_CLOSED:
                 break
+            elif event == 'Analisar':
+                result.hide()
+                analysis = window_analysis(execution_time, process)
             elif event == 'Voltar':
                 result.hide()
                 search.un_hide()
+        if window == analysis:
+            if event == Interface.WIN_CLOSED:
+                break
+            elif event == 'Voltar':
+                analysis.hide()
+                result.un_hide()
     window.close()
